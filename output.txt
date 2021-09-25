@@ -1,0 +1,5 @@
+ba 2
+ab 2
+asd 1
+qwww 1
+ase 1

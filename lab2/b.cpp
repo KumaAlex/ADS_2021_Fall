@@ -42,6 +42,60 @@ struct st {
         }
     }
 
+    void order() {
+        node * test = tail;
+        bool OK = false;
+        while (test->prev != NULL) {
+            node * cur = test;
+            node * precur = test->prev;
+            if (test->val == test->prev->val){
+                cur = test;
+                precur = test->prev;
+                int i = 0;
+                while (cur->name[i] == precur->name[i]) i++;
+                if (cur->name[i] < precur->name[i] && cur != tail && precur != head) {
+                    precur->prev->next = cur;
+                    cur->prev = precur->prev;
+                    cur->next->prev = precur;
+                    precur->next = cur->next;
+                    cur->next = precur;
+                    precur->prev = cur;
+                    OK = true;
+                } else if (cur->name[i] < precur->name[i] && cur == tail && precur != head) {
+                    precur->prev->next = cur;
+                    cur->prev = precur->prev;
+                    cur->next = precur;
+                    precur->prev = cur;
+                    precur->next = NULL;
+                    tail = precur;
+                    OK = true;
+                } else if (cur->name[i] < precur->name[i] && cur != tail && precur == head) {
+                    precur->next = cur->next;
+                    cur->next->prev = precur;
+                    precur->prev = cur;
+                    cur->next = precur;
+                    cur->prev = NULL;
+                    head = cur;
+                    OK = true;
+                } else if (cur->name[i] < precur->name[i] && cur == tail && precur == head) {
+                    head = cur;
+                    tail = precur;
+                    head->prev = NULL;
+                    tail->next = NULL;
+                    head->next = tail;
+                    tail->prev = head;
+                    OK = true;
+                }
+            }
+            test = test->prev;
+            if (OK) {
+                OK = false;
+                test = tail;
+            }
+        }
+    }
+
+
     void sort() {
         node * a = tail;
         node * test = tail;
@@ -54,10 +108,7 @@ struct st {
                 cur = test;
                 precur = test->prev;
                 if (precur == NULL) return;
-                while (cur->name[i] == precur->name[i]) {
-                    i++;
-                }
-                if(cur->name[i] < precur->name[i] && cur != tail && precur != head){
+                if(cur->val > precur->val && cur != tail && precur != head){
                     precur->prev->next = cur;
                     cur->prev = precur->prev;
                     cur->next->prev = precur;
@@ -66,7 +117,7 @@ struct st {
                     precur->prev = cur;
                     test = tail;
                     i = 0;
-                } else if (cur->name[i] < precur->name[i] && cur == tail && precur != head) {
+                } else if (cur->val > precur->val && cur == tail && precur != head) {
                     precur->prev->next = cur;
                     cur->prev = precur->prev;
                     cur->next = precur;
@@ -75,7 +126,7 @@ struct st {
                     tail = precur;
                     test = tail;
                     i = 0;
-                } else if (cur->name[i] < precur->name[i] && cur != tail && precur == head) {
+                } else if (cur->val > precur->val && cur != tail && precur == head) {
                     precur->next = cur->next;
                     cur->next->prev = precur;
                     precur->prev = cur;
@@ -83,7 +134,7 @@ struct st {
                     cur->prev = NULL;
                     head = cur;
                     return;
-                } else if (cur->name[i] < precur->name[i] && cur == tail && precur == head) {
+                } else if (cur->val > precur->val && cur == tail && precur == head) {
                     head = cur;
                     tail = precur;
                     head->prev = NULL;
@@ -128,6 +179,7 @@ int main() {
         q.add(s);
         q.sort();
     }
+    q.order();
     q.out(fout);
     fin.close();
     fout.close();

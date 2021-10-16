@@ -4,63 +4,70 @@ using namespace std;
 
 struct node{
     int val;
-    node * right;
     node * left;
-    node(int x) {
+    node * right;
+    node(int x){
         val = x;
-        right = left = NULL;
+        left = NULL;
+        right = NULL;
     }
 };
 
 struct bst{
-    node * root;
-    int cnt;
-    bst() {
-        root = NULL;
-        cnt = 0;
-    }
+    node * _root;
 
+    node * add(node * current, int x){
+        if(current == NULL) return new node(x);
 
-    node * add(node * cur, int x) {
-        if (cur == NULL) return new node(x);
-        if (cur->val < x) {
-            cur->right = add(cur->right, x);
+        if(current->val < x){
+            current->right = add(current->right, x);
         }
-        if (cur->val > x) {
-            cur->left = add(cur->left, x);
+
+        if(current->val > x){
+            current->left = add(current->left, x);
         }
-        return cur;
-    }
-    void add(int x) {
-        node * res = add(root, x);
-        if (root == NULL) root = res;
+
+        return current;
     }
 
-    int print(node * current, int level){
-        if(current != NULL){
-            if (cnt < level) cnt = level;
-            print(current->left, level + 1);
-            print(current->right, level + 1);
+    bst(){
+        _root = NULL;
+    }
+
+    void add(int x){
+        node * res = add(_root, x);
+        if(_root == NULL){
+            _root = res;
         }
-        return cnt;
-    }
-    void print(){
-        cout << print(root, 1);
-        cout << endl;
     }
 
 
+    void lvl(){
+        cout << lvl(_root);
+    }
+
+    int lvl(node * current){
+        int a = 0, b = 0;
+        if (current->left) {
+            a = lvl(current->left);
+        }
+        if (current->right) {
+            b = lvl(current->right);
+        }
+        return max(a, b) + 1;
+    }
 };
 
+int main(){
+    bst tree;
 
-int main() {
-    bst a;
-    int n;
-    while (cin >> n) {
-        if (n == 0) break;
-        a.add(n);
+    int x;
+    while (cin >> x) {
+        if (x == 0) break;
+        tree.add(x);
     }
     
-    a.print();
+    tree.lvl();
+
     return 0;
 }

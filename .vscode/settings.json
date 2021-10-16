@@ -9,6 +9,7 @@
         "deque": "cpp",
         "unordered_map": "cpp",
         "fstream": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "random": "cpp"
     }
 }

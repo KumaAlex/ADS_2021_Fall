@@ -14,39 +14,52 @@ struct node{
 
 struct bst{
     node * root;
-    int cnt;
+    node * prev;
     bst() {
-        root = NULL;
-        cnt = 0;
+        root = prev = NULL;
     }
 
 
-    node * add(node * cur, int x) {
-        if (cur == NULL) return new node(x);
-        if (cur->val < x) {
-            cur->right = add(cur->right, x);
-        }
-        if (cur->val > x) {
-            cur->left = add(cur->left, x);
+    node * add(node* root, int x) {
+		if (root == NULL) {
+			return new node(x);	
+		}
+		if (root->val > x) {
+			root->left = add(root->left, x);
+		} else if (root->val < x) {
+			root->right = add(root->right, x);
+		}
+		return root;
+	}
+    void add(int x) {
+		root = add(root, x);
+	}
+
+    node * rightmost(node * cur) {
+        while (cur->right) {
+            cur = cur->right;
         }
         return cur;
     }
-    void add(int x) {
-        node * res = add(root, x);
-        if (root == NULL) root = res;
-    }
 
-    int print(node * current, int level){
-        if(current != NULL){
-            cnt = current->val;
-            print(current->left, level + 1);
-            print(current->right, level + 1);
-        }
-        return cnt;
-    }
-    void print(){
-        cout << print(root, 1);
-        cout << endl;
+    node* second_maximum(node* root) {
+		if (root->right != NULL) { // если у корня имеется правое поддерево
+			node* parent = root; // храним указатель на родителя самого правого ребенка
+			while (parent->right->right != NULL) { // находим этого родителя
+				parent = parent->right;
+			}
+			
+			node* right = parent->right; // берем указатель на самого правого ребенка в дереве
+			if (right->left == NULL) { // если у right нет левого поддерева
+				return parent; // возвращаем родителя, так как он самый близкий, меньший по значению
+			}
+			return rightmost(right->left); // иначе идем в левое поддерево, и там ищем самое близкое значение к максимальному
+		} 
+		return rightmost(root->left); // если у корня нет правого поддерева, возвращаем, самое большое значение в левом поддереве
+	}
+    
+    void sec_rightmost() {
+        cout << second_maximum(root)->val;
     }
 
 };
@@ -59,7 +72,6 @@ int main() {
         if (n == 0) break;
         a.add(n);
     }
-    
-    a.print();
+    a.sec_rightmost();
     return 0;
 }

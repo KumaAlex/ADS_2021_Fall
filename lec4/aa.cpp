@@ -15,7 +15,6 @@ struct node{
 
 struct bst{
     node * _root;
-    int count;
 
     node * add(node * current, int x){
         if(current == NULL) return new node(x);
@@ -33,7 +32,6 @@ struct bst{
 
     bst(){
         _root = NULL;
-        count = 0;
     }
 
     void add(int x){
@@ -43,18 +41,48 @@ struct bst{
         }
     }
 
-    void cnt(){
-        cout << cnt(_root);
+    void print(){
+        print(_root, 0);
     }
-    int cnt(node * current){
+
+    void lvl(){
+        cout << lvl(_root);
+    }
+
+    void print(node * current, int level){
+        if(current != NULL){
+            print(current->left, level + 1);
+            cout << current->val << " " << level << endl;
+            print(current->right, level + 1);
+        }
+    }
+
+    int lvl(node * current){
+        int a = 0, b = 0;
         if (current->left) {
-            cnt(current->left);
+            a = lvl(current->left);
+            cout << current->val << endl;
         }
-        count++;
         if (current->right) {
-            cnt(current->right);
+            b = lvl(current->right);
+            
+            cout << current->val << endl;
         }
-        return count;
+        return max(a, b) + 1;
+    }
+
+    void pr(node * cur) {
+        if (cur->left) {
+            pr(cur->left);
+        }
+        cout << cur->val << " ";
+        if (cur->right) {
+            pr(cur->right);
+        }
+    }
+
+    void pr(){
+        pr(_root);
     }
 };
 
@@ -67,7 +95,7 @@ int main(){
         tree.add(x);
     }
     
-    tree.cnt();
+    tree.pr();
 
     return 0;
 }

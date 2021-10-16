@@ -34,34 +34,31 @@ struct st{
             tail = item;
         }
     }
-    int minus(string x) {
-        if (head == NULL) return 1;
-        node * item = new node (x);
+    string minus(string x) {
+        if (head == NULL) return "ERROR";
         node * cur = tail;
-        while (1 == 1) {
-            if (cur->val == item->val && cur != head && cur != tail) {
+        while (cur != NULL) {
+            if (cur->val == x && cur != head && cur != tail) {
                 node * rig = cur->next;
                 node * lef = cur->prev;
-                rig->next = lef;
-                lef->prev = rig;
-            } else if (cur->val == item->val && cur == head && cur != tail) {
+                rig->prev = lef;
+                lef->next = rig;
+                return "OK";
+            } else if (cur->val == x && cur == head && cur != tail) {
                 head = head->next;
                 head->prev = NULL;
-            } else if (cur->val == item->val && cur != head && cur == tail) {
+                return "OK";
+            } else if (cur->val == x && cur != head && cur == tail) {
                 tail = tail->prev;
                 tail->next = NULL;
-            } else if (cur->val == item->val && cur == head && cur == tail) {
-                if (cur->val == item->val) {
-                    head = tail = NULL;
-                    return 0;
-                } else {
-                    return 1;
-                }
+                return "OK";
+            } else if (cur->val == x && cur == head && cur == tail) {
+                head = tail = NULL;
+                return "OK";
             }
             cur = cur->prev;
-            if (cur == NULL) return 0;
         }
-        return 2;
+        return "ERROR";
     }
     void out(ostream& fout) {
         if (head == NULL) {
@@ -79,17 +76,15 @@ struct st{
 int main() {
     ifstream fin("input.txt");
     ofstream fout("output.txt");
-    int n;
     string s;
     st q;
     while(getline(fin, s)) {
-        n = 0;
         if (s[0] == '+') {
             s.erase(0, 1);
             q.plus(s);
         } else if (s[0] == '-') {
             s.erase(0, 1);
-            if (q.minus(s) == 1) {
+            if (q.minus(s) == "ERROR") {
                 fout << "ERROR";
                 return 0;
             }

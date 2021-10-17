@@ -43,9 +43,9 @@ struct bst{
     }
 
     node* second_maximum(node* root) {
-		if (root->right != NULL) { // если у корня имеется правое поддерево
+		if (root->right) { // если у корня имеется правое поддерево
 			node* parent = root; // храним указатель на родителя самого правого ребенка
-			while (parent->right->right != NULL) { // находим этого родителя
+			while (parent->right->right) { // находим этого родителя
 				parent = parent->right;
 			}
 			

@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int bs1(int arr[], int l, int r, int x){
+int bsl(int arr[], int l, int r, int x){
     while(l <= r){
         int m = l + (r - l) / 2;
         if (arr[m] == x) {
@@ -10,6 +10,7 @@ int bs1(int arr[], int l, int r, int x){
             while(arr[m] == arr[j]) {
                 j--;
             }
+            j++;
             return j+1;
         }
         if (arr[m] < x){
@@ -19,10 +20,10 @@ int bs1(int arr[], int l, int r, int x){
             r = m - 1;
         }
     }
-    return -1;
+    return 0;
 }
 
-int bs2(int arr[], int l, int r, int x){
+int bsr(int arr[], int l, int r, int x){
     while(l <= r){
         int m = l + (r - l) / 2;
         if (arr[m] == x) {
@@ -30,7 +31,7 @@ int bs2(int arr[], int l, int r, int x){
             while(arr[m] == arr[j]) {
                 j++;
             }
-            return j-1;
+            return j;
         }
         if (arr[m] < x){
             l = m + 1;
@@ -39,7 +40,6 @@ int bs2(int arr[], int l, int r, int x){
             r = m - 1;
         }
     }
-    return -1;
 }
 
 int main() {
@@ -57,9 +57,9 @@ int main() {
         ch[i] = x;
     }
     for (int i = 0; i < k; i++) {
-        cout << bs1(arr, 0, n-1, ch[i])+1;
-        if (bs1(arr, 0, n-1, ch[i]) != -1) {
-            cout << " " << bs2(arr, 0, n-1, ch[i])+1 << endl;
+        cout << bsl(arr, 0, n-1, ch[i]);
+        if (bsl(arr, 0, n-1, ch[i]) != 0) {
+            cout << " " << bsr(arr, 0, n-1, ch[i]) << endl;
         } else {
             cout << endl;
         }

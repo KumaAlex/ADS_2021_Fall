@@ -4,7 +4,6 @@ using namespace std;
 
 int partition(int l, int r, int arr[]) {
     int j = l;
-    swap(arr[l], arr[r]);
     for (int i = l; i < r; ++i) {
         if (arr[i] < arr[r]) {
             swap(arr[j], arr[i]);
